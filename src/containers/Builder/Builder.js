@@ -32,18 +32,28 @@ class Builder extends React.Component {
         // updated total Price = old price + price addition
         const newPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
         // set state with new totalPrice and ingredients
-        this.setState({totalPrice: newPrice, ingredients: updatedIngredients})
+        this.setState({ totalPrice: newPrice, ingredients: updatedIngredients })
     }
 
     removeIngredientHandler = (type) => {
-
+        // grab old Count from state and increment
+        const updatedCount = this.state.ingredients[type] - 1;
+        // make a copy of ingredients an update relevant
+        const updatedIngredients = {
+            ...this.state.ingredients
+        };
+        updatedIngredients[type] = updatedCount;
+        // updated total Price = old price - price deduction
+        const newPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
+        // set state with new totalPrice and ingredients
+        this.setState({ totalPrice: newPrice, ingredients: updatedIngredients })
     }
 
     render() {
         return (
             <Aux>
                 <Burger ingredients={this.state.ingredients} />
-                <BuildControls 
+                <BuildControls
                     ingredientAdded={this.addIngredientHandler}
                     ingredientRemoved={this.removeIngredientHandler}
                 />
