@@ -18,6 +18,8 @@ const buildControls = (props) => (
                 // pass the type of ingredient that should be added/removed
                 added={() => props.ingredientAdded(control.type)}
                 removed={() => props.ingredientRemoved(control.type)}
+                // so we can access the right control to disable
+                disabled={props.disabled[control.type]}
             />
         ))};
     </div> 

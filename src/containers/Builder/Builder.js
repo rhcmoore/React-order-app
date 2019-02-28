@@ -24,7 +24,7 @@ class Builder extends React.Component {
     addIngredientHandler = (type) => {
         // grab old Count from state and increment
         const updatedCount = this.state.ingredients[type] + 1;
-        // make a copy of ingredients an update relevant
+        // make a copy of ingredients and update relevant number
         const updatedIngredients = {
             ...this.state.ingredients
         };
@@ -38,7 +38,11 @@ class Builder extends React.Component {
     removeIngredientHandler = (type) => {
         // grab old Count from state and increment
         const updatedCount = this.state.ingredients[type] - 1;
-        // make a copy of ingredients an update relevant
+        // if it's already 0, exit
+        if (this.state.ingredients[type] <= 0) {
+            return;
+        }
+        // make a copy of ingredients and update relevant number
         const updatedIngredients = {
             ...this.state.ingredients
         };
@@ -50,12 +54,21 @@ class Builder extends React.Component {
     }
 
     render() {
+        // copy ingredients from state
+        const disabledInfo = {
+            ...this.state.ingredients
+        }
+        // return boolean to tell if it should be disabled
+        for (let key in disabledInfo) {
+            disabledInfo[key] = disabledInfo[key] <= 0
+        }
         return (
             <Aux>
                 <Burger ingredients={this.state.ingredients} />
                 <BuildControls
                     ingredientAdded={this.addIngredientHandler}
                     ingredientRemoved={this.removeIngredientHandler}
+                    disabled={disabledInfo}
                 />
             </Aux>
         )
