@@ -15,10 +15,24 @@ class Builder extends React.Component {
         ingredients: {
             salad: 0,
             bacon: 0,
-            cheese: 1,
+            cheese: 0,
             meat: 0
         },
-        totalPrice: 4
+        totalPrice: 4,
+        purchaseable: false
+    }
+
+    updatePurchaseState = (ingredients) => {
+        // determine whether or not anything has been purchased
+        const sum = Object.keys(ingredients).map(ingKey => {
+            // return the amount
+            return ingredients[ingKey];
+            // reduce to return one result for sum
+            }).reduce((sum, el) => {
+                return sum + el;
+            }, 0);
+        // updated purchaseable state to boolean (true if some items added)
+        this.setState({purchaseable: sum > 0})
     }
 
     addIngredientHandler = (type) => {
@@ -32,7 +46,8 @@ class Builder extends React.Component {
         // updated total Price = old price + price addition
         const newPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
         // set state with new totalPrice and ingredients
-        this.setState({ totalPrice: newPrice, ingredients: updatedIngredients })
+        this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
+        this.updatePurchaseState(updatedIngredients);
     }
 
     removeIngredientHandler = (type) => {
@@ -50,7 +65,8 @@ class Builder extends React.Component {
         // updated total Price = old price - price deduction
         const newPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
         // set state with new totalPrice and ingredients
-        this.setState({ totalPrice: newPrice, ingredients: updatedIngredients })
+        this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
+        this.updatePurchaseState(updatedIngredients);
     }
 
     render() {
@@ -70,6 +86,7 @@ class Builder extends React.Component {
                     ingredientRemoved={this.removeIngredientHandler}
                     disabled={disabledInfo}
                     price={this.state.totalPrice}
+                    purchaseable={this.state.purchaseable}
                 />
             </Aux>
         )
