@@ -1,10 +1,11 @@
 import React from "react";
-import Aux from "../../../hoc/Aux";
+import Aux from "../../../hoc/Aux/Aux";
 import Button from "../../UI/Button/Button"
 
 // for modal
 class OrderSummary extends React.Component {
 
+    // left for future purposes (could be functional)
     componentWillUpdate() {
         console.log("[Order Summary] willUpdate");
     }
