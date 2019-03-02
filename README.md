@@ -13,17 +13,3 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
     [---------Logo--------------------]                 [Build Controls] ----------- [Item] ----------- [Modal]
     [---------Navigation Items--------]              [Controls...] [Order]   [Item ingredients...]  [{props.children}]
                                                            
-### State: 
-    Items:
-    * Boots
-    * Skis
-    * Poles
-    * Helmet
-
-    Purchased:
-    * boolean
-
-    Total Price:
-    * $$$
-
-    Managed in stateful Order Builder component
