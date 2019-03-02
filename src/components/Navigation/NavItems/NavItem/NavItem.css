@@ -7,7 +7,7 @@
 }
 
 .NavItem a {
-    color: #8F5C2C;
+    color: black;
     text-decoration: none;
     width: 100%;
     box-sizing: border-box;
@@ -17,7 +17,7 @@
 .NavItem a:hover,
 .NavItem a:active,
 .NavItem a.active {
-    color: #40A4C8;
+    color: #C6001D;
 }
 
 /* desktop media query */
@@ -40,7 +40,7 @@
     .NavItem a:hover,
     .NavItem a:active,
     .NavItem a:active {
-        background-color: #8F5C2C;
+        background-color: #C6001D;
         border-bottom: 4px solid #40A4C8;
         color: white;
     }

@@ -6,7 +6,7 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 
 const INGREDIENT_PRICES = {
-    salad: 0.3,
+    lettuce: 0.3,
     bacon: 0.7,
     cheese: 0.5,
     meat: 1.3
@@ -15,7 +15,7 @@ const INGREDIENT_PRICES = {
 class Builder extends React.Component {
     state = {
         ingredients: {
-            salad: 0,
+            lettuce: 0,
             bacon: 0,
             cheese: 0,
             meat: 0
