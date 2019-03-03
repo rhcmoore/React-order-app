@@ -26,6 +26,7 @@ class OrderSummary extends React.Component {
                 <h3>Your Order</h3>
                 <p>Your order includes:</p>
                 <ul>
+       
                     {ingredientSummary}
                 </ul>
                 <p><strong>Total Price: ${this.props.price.toFixed(2)}</strong></p>
