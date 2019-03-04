@@ -5,7 +5,8 @@ import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import axios from "../../axios-orders"; // use configured instance
-import Spinner from "../../components/UI/Spinner/Spinner"
+import Spinner from "../../components/UI/Spinner/Spinner";
+import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 
 const INGREDIENT_PRICES = {
     lettuce: 0.3,
@@ -147,4 +148,4 @@ class Builder extends React.Component {
     }
 }
 
-export default Builder;
+export default withErrorHandler(Builder, axios);
