@@ -5,6 +5,7 @@ import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import axios from "../../axios-orders"; // use configured instance
+import Spinner from "../../components/UI/Spinner/Spinner"
 
 const INGREDIENT_PRICES = {
     lettuce: 0.3,
@@ -25,7 +26,9 @@ class Builder extends React.Component {
         // determine whether any items have been added
         purchaseable: false,
         // determine if used has clicked Order
-        purchasing: false
+        purchasing: false,
+        // when T show spinner, when F show ordersummary
+        loading: false
     }
 
     updatePurchaseState = (ingredients) => {
@@ -34,11 +37,11 @@ class Builder extends React.Component {
             // return the amount
             return ingredients[ingKey];
             // reduce to return one result for sum
-            }).reduce((sum, el) => {
-                return sum + el;
-            }, 0);
+        }).reduce((sum, el) => {
+            return sum + el;
+        }, 0);
         // updated purchaseable state to boolean (true if some items added)
-        this.setState({purchaseable: sum > 0})
+        this.setState({ purchaseable: sum > 0 })
     }
 
     addIngredientHandler = (type) => {
@@ -76,20 +79,21 @@ class Builder extends React.Component {
     }
 
     purchaseHandler = () => {
-        this.setState({purchasing:true})
+        this.setState({ purchasing: true })
     }
 
     purchaseCancelHandler = () => {
-        this.setState({purchasing: false});
+        this.setState({ purchasing: false });
     }
 
     purchaseContinueHandler = () => {
+        this.setState({loading: true});
         const order = {
             ingredients: this.state.ingredients,
             price: this.state.totalPrice, // would need to calculate on server-side in prod env
             customer: {
                 name: "Rick Berry",
-                address : {
+                address: {
                     street: "Lombard",
                     zipCode: "41414",
                     country: "USA"
@@ -99,8 +103,12 @@ class Builder extends React.Component {
             deliveryMethod: "fastest"
         }
         axios.post("/orders.json", order) // .json is Firebase notation
-             .then(response => console.log(response))
-             .catch(error => console.log(error));
+            .then(response => {
+                this.setState({loading: false, purchasing: false});
+            })
+            .catch(error => {
+                this.setState({loading: false, purchasing: false});
+            });
     }
 
     render() {
@@ -112,15 +120,18 @@ class Builder extends React.Component {
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0
         }
+        let orderSummary = <OrderSummary
+            ingredients={this.state.ingredients}
+            price={this.state.totalPrice}
+            purchaseCancelled={this.purchaseCancelHandler}
+            purchaseContinued={this.purchaseContinueHandler}/>
+        if (this.state.loading) {
+            orderSummary = <Spinner />
+        }
         return (
             <Aux>
                 <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
-                    <OrderSummary 
-                        ingredients={this.state.ingredients}
-                        price={this.state.totalPrice}
-                        purchaseCancelled={this.purchaseCancelHandler} 
-                        purchaseContinued={this.purchaseContinueHandler} 
-                    />
+                    {orderSummary}
                 </Modal>
                 <Burger ingredients={this.state.ingredients} />
                 <BuildControls
