@@ -4,6 +4,7 @@ import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
+import axios from "../../axios-orders"; // use configured instance
 
 const INGREDIENT_PRICES = {
     lettuce: 0.3,
@@ -83,7 +84,23 @@ class Builder extends React.Component {
     }
 
     purchaseContinueHandler = () => {
-        alert("Thank you, come again.")
+        const order = {
+            ingredients: this.state.ingredients,
+            price: this.state.totalPrice, // would need to calculate on server-side in prod env
+            customer: {
+                name: "Rick Berry",
+                address : {
+                    street: "Lombard",
+                    zipCode: "41414",
+                    country: "USA"
+                },
+                email: "charlie@brown.edu"
+            },
+            deliveryMethod: "fastest"
+        }
+        axios.post("/orders.json", order) // .json is Firebase notation
+             .then(response => console.log(response))
+             .catch(error => console.log(error));
     }
 
     render() {
