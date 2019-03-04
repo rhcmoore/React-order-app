@@ -24,14 +24,17 @@ class Builder extends React.Component {
         // determine if used has clicked Order
         purchasing: false,
         // when T show spinner, when F show ordersummary
-        loading: false
+        loading: false,
+        error: false
     };
 
     componentDidMount() {
         axios.get("https://order-e8ff6.firebaseio.com/ingredients.json")
             .then(response => {
                 this.setState({ ingredients: response.data })
-            })
+            }).catch(error => {
+                this.setState({error: true});
+            });
     }
 
     updatePurchaseState = (ingredients) => {
@@ -124,7 +127,7 @@ class Builder extends React.Component {
             disabledInfo[key] = disabledInfo[key] <= 0
         }
         let orderSummary = null;
-        let burger = <Spinner />
+        let burger = this.state.error ? <p>Can't load ingredients</p> : <Spinner />
         if (this.state.ingredients) {
             burger = (
                 <Aux>
