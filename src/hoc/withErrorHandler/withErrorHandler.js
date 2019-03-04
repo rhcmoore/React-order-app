@@ -10,16 +10,21 @@ const withErrorHandler = (WrappedComponent, axios) => {
         // deprecated, should use constructor 
         // (execute code when component is created)
         componentWillMount () {
-            axios.interceptors.request.use(req => {
+            this.reqInterceptor = axios.interceptors.request.use(req => {
                 // clear errors when a request is sent
                 this.setState({error: null});
                 // return request so it is available
                 return req;
             });
-            axios.interceptors.response.use(res => res, error => {
+            this.resInterceptor = axios.interceptors.response.use(res => res, error => {
                 // set state error to error recieved from Firebase
                 this.setState({error: error})
             });
+        }
+
+        componentWillUnmount() {
+            axios.interceptors.request.eject(this.reqInterceptor);
+            axios.interceptors.request.eject(this.resInterceptor);
         }
 
         errorConfirmedHandler = () => {
