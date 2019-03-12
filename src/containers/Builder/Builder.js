@@ -18,6 +18,7 @@ const INGREDIENT_PRICES = {
 class Builder extends React.Component {
     state = {
         ingredients: null,
+        // base price $4
         totalPrice: 4,
         // determine whether any items have been added
         purchaseable: false,
@@ -93,28 +94,31 @@ class Builder extends React.Component {
     }
 
     purchaseContinueHandler = () => {
-        this.setState({ loading: true });
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice, // would need to calculate on server-side in prod env
-            customer: {
-                name: "Rick Berry",
-                address: {
-                    street: "Lombard",
-                    zipCode: "41414",
-                    country: "USA"
-                },
-                email: "charlie@brown.edu"
-            },
-            deliveryMethod: "fastest"
-        }
-        axios.post("/orders.json", order) // .json is Firebase notation
-            .then(response => {
-                this.setState({ loading: false, purchasing: false });
-            })
-            .catch(error => {
-                this.setState({ loading: false, purchasing: false });
-            });
+        // this.setState({ loading: true });
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice, // would need to calculate on server-side in prod env
+        //     // hard-coded, will update with auth data
+        //     customer: {
+        //         name: "Rick Berry",
+        //         address: {
+        //             street: "Lombard",
+        //             zipCode: "41414",
+        //             country: "USA"
+        //         },
+        //         email: "charlie@brown.edu"
+        //     },
+        //     deliveryMethod: "fastest"
+        // }
+        // // post order to db
+        // axios.post("/orders.json", order) // .json is Firebase notation
+        //     .then(response => {
+        //         this.setState({ loading: false, purchasing: false });
+        //     })
+        //     .catch(error => {
+        //         this.setState({ loading: false, purchasing: false });
+        //     });
+        this.props.history.push("/checkout");
     }
 
     render() {

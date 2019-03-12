@@ -17,7 +17,7 @@
 .NavItem a:hover,
 .NavItem a:active,
 .NavItem a.active {
-    color: #C6001D;
+    color: white;
 }
 
 /* desktop media query */
@@ -41,7 +41,7 @@
     .NavItem a:active,
     .NavItem a:active {
         background-color: #C6001D;
-        border-bottom: 4px solid #40A4C8;
+        border-bottom: 4px solid #FFEF00;
         color: white;
     }
 }
