@@ -94,31 +94,18 @@ class Builder extends React.Component {
     }
 
     purchaseContinueHandler = () => {
-        // this.setState({ loading: true });
-        // const order = {
-        //     ingredients: this.state.ingredients,
-        //     price: this.state.totalPrice, // would need to calculate on server-side in prod env
-        //     // hard-coded, will update with auth data
-        //     customer: {
-        //         name: "Rick Berry",
-        //         address: {
-        //             street: "Lombard",
-        //             zipCode: "41414",
-        //             country: "USA"
-        //         },
-        //         email: "charlie@brown.edu"
-        //     },
-        //     deliveryMethod: "fastest"
-        // }
-        // // post order to db
-        // axios.post("/orders.json", order) // .json is Firebase notation
-        //     .then(response => {
-        //         this.setState({ loading: false, purchasing: false });
-        //     })
-        //     .catch(error => {
-        //         this.setState({ loading: false, purchasing: false });
-        //     });
-        this.props.history.push("/checkout");
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            // push key/=/value pairs into array 
+            queryParams.push(encodeURIComponent(i) + "=" + encodeURIComponent(this.state.ingredients[i]));
+        }
+        // add total price to query params
+        queryParams.push("price=" + this.state.totalPrice)
+        const queryString = queryParams.join("&");
+        this.props.history.push({
+            pathname: "/checkout",
+            search: "?" + queryString
+        });
     }
 
     render() {
