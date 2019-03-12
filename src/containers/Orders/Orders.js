@@ -5,11 +5,11 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 
 class Orders extends React.Component {
     state = {
-        orders : [],
+        orders: [],
         loading: true
     }
 
-    componentDidMount () {
+    componentDidMount() {
         // get orders from Firebase and populate
         axios.get("/orders.json")
             .then(res => {
@@ -20,18 +20,21 @@ class Orders extends React.Component {
                         id: key
                     });
                 }
-                this.setState({loading: false, orders: fetchedOrders});
-                console.log(this.state.orders);
+                this.setState({ loading: false, orders: fetchedOrders });
             }).catch(err => {
-                this.setState({loading: false});
+                this.setState({ loading: false });
             })
     }
 
     render() {
         return (
             <div>
-                <Order />
-                <Order />
+                {this.state.orders.map(order => (
+                    <Order 
+                        key={order.id}
+                        ingredients={order.ingredients}
+                        price={order.price} />
+                ))}
             </div>
         );
     }
