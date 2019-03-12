@@ -14,11 +14,14 @@
     display: block;
 }
 
-.NavItem a:hover,
-.NavItem a:active,
-.NavItem a.active {
-    color: white;
+@media (max-width: 499px) {
+    .NavItem a:hover,
+    .NavItem a:active,
+    .NavItem a.active {
+        color: #C6001D;
+    }
 }
+
 
 /* desktop media query */
 @media (min-width: 500px) {
@@ -37,11 +40,13 @@
         border-bottom: 4px solid transparent;
     }
     
-    .NavItem a:hover,
+    .NavItem a:hover {
+        border-bottom: 4px solid #FFEF00;
+        color: #FFEF00;
+    }
     .NavItem a:active,
     .NavItem a:active {
-        background-color: #C6001D;
-        border-bottom: 4px solid #FFEF00;
-        color: white;
+        border-bottom: 4px solid blue;
+        color: blue;
     }
 }
