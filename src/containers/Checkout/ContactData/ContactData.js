@@ -14,7 +14,11 @@ class ContactData extends React.Component {
                     type: "text",
                     placeholder: "Name"
                 },
-                value: ""
+                value: "",
+                validation: {
+                    required: true
+                },
+                valid: false
             },
             street: {
                 elementType: "input",
@@ -22,7 +26,11 @@ class ContactData extends React.Component {
                     type: "text",
                     placeholder: "Street"
                 },
-                value: ""
+                value: "",
+                validation: {
+                    required: true
+                },
+                valid: false
             },
             zipCode: {
                 elementType: "input",
@@ -30,7 +38,13 @@ class ContactData extends React.Component {
                     type: "text",
                     placeholder: "Zip Code"
                 },
-                value: ""
+                value: "",
+                validation: {
+                    required: true,
+                    minLength: 5,
+                    maxLength: 5
+                },
+                valid: false
             },
             country: {
                 elementType: "input",
@@ -38,7 +52,11 @@ class ContactData extends React.Component {
                     type: "text",
                     placeholder: "Country"
                 },
-                value: ""
+                value: "",
+                validation: {
+                    required: true
+                },
+                valid: false
             },
             email: {
                 elementType: "input",
@@ -46,7 +64,11 @@ class ContactData extends React.Component {
                     type: "text",
                     placeholder: "Email"
                 },
-                value: ""
+                value: "",
+                validation: {
+                    required: true
+                },
+                valid: false
             },
             deliveryMethod: {
                 elementType: "select",
@@ -86,6 +108,21 @@ class ContactData extends React.Component {
             });
     }
 
+    checkValidity(value, rules) {
+        let isValid = true;
+        if (rules.required) {
+            // set valid to value if not an empty string
+            isValid = value.trim() !== "" && isValid;
+        }
+        if (rules.minLength) {
+            isValid = value.length >= rules.minLength && isValid;
+        }
+        if (rules.maxLength) {
+            isValid = value.length <= rules.maxLength && isValid;
+        }
+        return isValid;
+    }
+
     inputChangedHandler = (event, inputId) => {
         // clone order form from state
         const updatedOrderForm = {
@@ -97,7 +134,10 @@ class ContactData extends React.Component {
         }
         // change value of select element 
         updatedFormElement.value = event.target.value;
+        // validation with checkValidity helper
+        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
         updatedOrderForm[inputId] = updatedFormElement;
+        console.log(updatedFormElement);
         this.setState({orderForm: updatedOrderForm})
     }
 
