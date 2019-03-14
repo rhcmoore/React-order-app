@@ -65,9 +65,15 @@ class ContactData extends React.Component {
     orderHandler = (event) => {
         event.preventDefault();
         this.setState({ loading: true });
+        const formData = {};
+        // formElementId is email/country/etc
+        for (let formElementId in this.state.orderForm) {
+            formData[formElementId] = this.state.orderForm[formElementId].value;
+        }
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price, // would need to calculate on server-side in prod env
+            orderData: formData
         }
         // post order to db
         axios.post("/orders.json", order) // .json is Firebase notation
@@ -105,7 +111,7 @@ class ContactData extends React.Component {
         }
 
         let form = (
-            <form>
+            <form onSubmit={this.orderHandler}>
                 {formElementsArray.map(formEl => (
                     <Input
                         key={formEl.id}
@@ -114,7 +120,7 @@ class ContactData extends React.Component {
                         value={formEl.config.value} 
                         changed={(event) => this.inputChangedHandler(event, formEl.id)}/>
                 ))}
-                <Button btnType="Success" clicked={this.orderHandler}>Submit</Button>
+                <Button btnType="Success">Submit</Button>
             </form>
         );
         if (this.state.loading) {
