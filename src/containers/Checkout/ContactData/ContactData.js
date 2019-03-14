@@ -18,7 +18,8 @@ class ContactData extends React.Component {
                 validation: {
                     required: true
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             street: {
                 elementType: "input",
@@ -30,7 +31,8 @@ class ContactData extends React.Component {
                 validation: {
                     required: true
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             zipCode: {
                 elementType: "input",
@@ -44,7 +46,8 @@ class ContactData extends React.Component {
                     minLength: 5,
                     maxLength: 5
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             country: {
                 elementType: "input",
@@ -56,7 +59,8 @@ class ContactData extends React.Component {
                 validation: {
                     required: true
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             email: {
                 elementType: "input",
@@ -68,7 +72,8 @@ class ContactData extends React.Component {
                 validation: {
                     required: true
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             deliveryMethod: {
                 elementType: "select",
@@ -136,6 +141,7 @@ class ContactData extends React.Component {
         updatedFormElement.value = event.target.value;
         // validation with checkValidity helper
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
+        updatedFormElement.touched = true;
         updatedOrderForm[inputId] = updatedFormElement;
         console.log(updatedFormElement);
         this.setState({orderForm: updatedOrderForm})
@@ -158,6 +164,9 @@ class ContactData extends React.Component {
                         elementType={formEl.config.elementType}
                         elementConfig={formEl.config.elementConfig}
                         value={formEl.config.value} 
+                        invalid={!formEl.config.valid}
+                        shouldValidate={formEl.config.validation} // return false when no validation present
+                        touched={formEl.config.touched}
                         changed={(event) => this.inputChangedHandler(event, formEl.id)}/>
                 ))}
                 <Button btnType="Success">Submit</Button>
