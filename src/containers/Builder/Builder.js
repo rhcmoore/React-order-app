@@ -10,16 +10,8 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import * as actionTypes from "../../store/actions";
 
-const INGREDIENT_PRICES = {
-    lettuce: 0.3,
-    bacon: 0.7,
-    cheese: 0.5,
-    meat: 1.3
-}
-
 class Builder extends React.Component {
     state = {
-        totalPrice: 4, // base price $4
         purchaseable: false, // determine whether any items have been added
         purchasing: false, // determine if used has clicked Order
         loading: false, // when T show spinner, when F show ordersummary
@@ -46,40 +38,6 @@ class Builder extends React.Component {
         }, 0);
         // updated purchaseable state to boolean (true if some items added)
         this.setState({ purchaseable: sum > 0 })
-    }
-
-    addIngredientHandler = (type) => {
-        // grab old Count from state and increment
-        const updatedCount = this.state.ingredients[type] + 1;
-        // make a copy of ingredients and update relevant number
-        const updatedIngredients = {
-            ...this.state.ingredients
-        };
-        updatedIngredients[type] = updatedCount;
-        // updated total Price = old price + price addition
-        const newPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
-        // set state with new totalPrice and ingredients
-        this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-        this.updatePurchaseState(updatedIngredients);
-    }
-
-    removeIngredientHandler = (type) => {
-        // grab old Count from state and increment
-        const updatedCount = this.state.ingredients[type] - 1;
-        // if it's already 0, exit
-        if (this.state.ingredients[type] <= 0) {
-            return;
-        }
-        // make a copy of ingredients and update relevant number
-        const updatedIngredients = {
-            ...this.state.ingredients
-        };
-        updatedIngredients[type] = updatedCount;
-        // updated total Price = old price - price deduction
-        const newPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
-        // set state with new totalPrice and ingredients
-        this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-        this.updatePurchaseState(updatedIngredients);
     }
 
     purchaseHandler = () => {
@@ -124,7 +82,7 @@ class Builder extends React.Component {
                         ingredientAdded={this.props.onIngredientAdded}
                         ingredientRemoved={this.props.onIngredientRemoved}
                         disabled={disabledInfo}
-                        price={this.state.totalPrice}
+                        price={this.props.price}
                         purchaseable={this.state.purchaseable}
                         ordered={this.purchaseHandler}
                     />
@@ -132,7 +90,7 @@ class Builder extends React.Component {
             );
             orderSummary = <OrderSummary
                 ingredients={this.props.ings}
-                price={this.state.totalPrice}
+                price={this.props.price}
                 purchaseCancelled={this.purchaseCancelHandler}
                 purchaseContinued={this.purchaseContinueHandler} />
         }
@@ -151,12 +109,15 @@ class Builder extends React.Component {
     }
 }
 
+// fetching from global state
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients
+        ings: state.ingredients,
+        price: state.totalPrice
     }
 }
 
+// sending to reducer values as props
 const mapDispatchToProps = dispatch => {
     return {
         onIngredientAdded: (ingName) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName: ingName}),
