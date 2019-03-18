@@ -11,8 +11,8 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import * as actionTypes from "../../store/actions";
 
 class Builder extends React.Component {
+    // For UI state only, the rest managed in Redux
     state = {
-        purchaseable: false, // determine whether any items have been added
         purchasing: false, // determine if used has clicked Order
         loading: false, // when T show spinner, when F show ordersummary
         error: false
@@ -28,7 +28,7 @@ class Builder extends React.Component {
     }
 
     updatePurchaseState = (ingredients) => {
-        // determine whether or not anything has been purchased
+        // determine whether or not anything has been selected
         const sum = Object.keys(ingredients).map(ingKey => {
             // return the amount
             return ingredients[ingKey];
@@ -36,8 +36,7 @@ class Builder extends React.Component {
         }).reduce((sum, el) => {
             return sum + el;
         }, 0);
-        // updated purchaseable state to boolean (true if some items added)
-        this.setState({ purchaseable: sum > 0 })
+        return sum > 0;
     }
 
     purchaseHandler = () => {
@@ -49,18 +48,7 @@ class Builder extends React.Component {
     }
 
     purchaseContinueHandler = () => {
-        const queryParams = [];
-        for (let i in this.state.ingredients) {
-            // push key/=/value pairs into array 
-            queryParams.push(encodeURIComponent(i) + "=" + encodeURIComponent(this.state.ingredients[i]));
-        }
-        // add total price to query params
-        queryParams.push("price=" + this.state.totalPrice)
-        const queryString = queryParams.join("&");
-        this.props.history.push({
-            pathname: "/checkout",
-            search: "?" + queryString
-        });
+        this.props.history.push("/checkout");
     }
 
     render() {
@@ -83,7 +71,7 @@ class Builder extends React.Component {
                         ingredientRemoved={this.props.onIngredientRemoved}
                         disabled={disabledInfo}
                         price={this.props.price}
-                        purchaseable={this.state.purchaseable}
+                        purchaseable={this.updatePurchaseState(this.props.ings)}
                         ordered={this.purchaseHandler}
                     />
                 </Aux>
