@@ -164,3 +164,21 @@
     background-color: #d1503f;
     margin: 2% auto;
 }
+
+.FryingPan {
+  height: 20px;
+  width: 40%;
+  background-color: silver;
+  margin: 2% auto;
+  border-radius: 15px;
+  display: block;
+  text-align: left;
+}
+
+.FryingPanHandle {
+  height: 8px;
+  width: 150%;
+  background-color: silver;
+  display: block;
+  text-align: left;
+}

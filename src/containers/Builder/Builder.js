@@ -1,4 +1,5 @@
 import React from "react";
+import {connect} from "react-redux";
 import axios from "../../axios-orders"; // use configured instance
 import Aux from "../../hoc/Aux/Aux";
 import Burger from "../../components/Burger/Burger";
@@ -7,6 +8,7 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
+import * as actionTypes from "../../store/actions";
 
 const INGREDIENT_PRICES = {
     lettuce: 0.3,
@@ -17,25 +19,20 @@ const INGREDIENT_PRICES = {
 
 class Builder extends React.Component {
     state = {
-        ingredients: null,
-        // base price $4
-        totalPrice: 4,
-        // determine whether any items have been added
-        purchaseable: false,
-        // determine if used has clicked Order
-        purchasing: false,
-        // when T show spinner, when F show ordersummary
-        loading: false,
+        totalPrice: 4, // base price $4
+        purchaseable: false, // determine whether any items have been added
+        purchasing: false, // determine if used has clicked Order
+        loading: false, // when T show spinner, when F show ordersummary
         error: false
     };
 
     componentDidMount() {
-        axios.get("https://order-e8ff6.firebaseio.com/ingredients.json")
-            .then(response => {
-                this.setState({ ingredients: response.data })
-            }).catch(error => {
-                this.setState({error: true});
-            });
+        // axios.get("https://order-e8ff6.firebaseio.com/ingredients.json")
+        //     .then(response => {
+        //         this.setState({ ingredients: response.data })
+        //     }).catch(error => {
+        //         this.setState({error: true});
+        //     });
     }
 
     updatePurchaseState = (ingredients) => {
@@ -111,7 +108,7 @@ class Builder extends React.Component {
     render() {
         // copy ingredients from state
         const disabledInfo = {
-            ...this.state.ingredients
+            ...this.props.ings // from store
         }
         // return boolean to tell if it should be disabled
         for (let key in disabledInfo) {
@@ -119,13 +116,13 @@ class Builder extends React.Component {
         }
         let orderSummary = null;
         let burger = this.state.error ? <p>Can't load ingredients</p> : <Spinner />
-        if (this.state.ingredients) {
+        if (this.props.ings) {
             burger = (
                 <Aux>
-                    <Burger ingredients={this.state.ingredients} />
+                    <Burger ingredients={this.props.ings} />
                     <BuildControls
-                        ingredientAdded={this.addIngredientHandler}
-                        ingredientRemoved={this.removeIngredientHandler}
+                        ingredientAdded={this.props.onIngredientAdded}
+                        ingredientRemoved={this.props.onIngredientRemoved}
                         disabled={disabledInfo}
                         price={this.state.totalPrice}
                         purchaseable={this.state.purchaseable}
@@ -134,7 +131,7 @@ class Builder extends React.Component {
                 </Aux>
             );
             orderSummary = <OrderSummary
-                ingredients={this.state.ingredients}
+                ingredients={this.props.ings}
                 price={this.state.totalPrice}
                 purchaseCancelled={this.purchaseCancelHandler}
                 purchaseContinued={this.purchaseContinueHandler} />
@@ -154,4 +151,17 @@ class Builder extends React.Component {
     }
 }
 
-export default withErrorHandler(Builder, axios);
+const mapStateToProps = state => {
+    return {
+        ings: state.ingredients
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onIngredientAdded: (ingName) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName: ingName}),
+        onIngredientRemoved: (ingName) => dispatch({type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingName})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Builder, axios));

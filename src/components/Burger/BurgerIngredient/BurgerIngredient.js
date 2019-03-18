@@ -30,6 +30,11 @@ class BurgerIngredient extends React.Component {
                 break;
             case ("bacon"):
                 ingredient = <div className={classes.Bacon}></div>;
+                // ingredient = (
+                //     <div>
+                //         <div className={classes.FryingPan}><div className={classes.FryingPanHandle}></div></div>
+                //     </div>
+                // );
                 break;
             default:
                 ingredient = null;
