@@ -1,7 +1,7 @@
-## React Order App (In-N-Out) 
+## React Order App (Le Creuset) 
 
-Basic web order interface for In-N-Out burgers. Built with React and with mobile first.
+Basic web order interface for Le Creuset cookware. Built with React and with mobile first.
 
-Experimenting with React design patterns and responsiveness. 
+Focusing on React/Redux design patterns. 
 
 <img src="./README.png" width="100%">
