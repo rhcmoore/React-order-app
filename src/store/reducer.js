@@ -2,19 +2,19 @@ import * as actionTypes from "./actions";
 
 const initialState = {
     ingredients: {
-        lettuce: 0,
-        bacon: 0,
-        cheese: 0,
-        meat: 0
+        skillet: 0,
+        casserole: 0,
+        braiser: 0,
+        dutchoven: 0
     },
-    totalPrice: 4
+    totalPrice: 0
 };
 
 const INGREDIENT_PRICES = {
-    lettuce: 0.3,
-    bacon: 0.7,
-    cheese: 0.5,
-    meat: 1.3
+    skillet: 110,
+    casserole: 170,
+    braiser: 210,
+    dutchoven: 375
 }
 
 const reducer = (state = initialState, action) => {

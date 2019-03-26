@@ -1,6 +1,6 @@
 import React from "react";
 // import so webpack can locate
-import burgerLogo from "../../assets/images/burger-logo.png";
+import burgerLogo from "../../assets/images/logo.png";
 import classes from "./Logo.css";
 
 const logo = (props) => (

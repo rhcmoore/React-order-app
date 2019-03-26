@@ -3,15 +3,19 @@ import classes from "./BuildControls.css";
 import BuildControl from "./BuildControl/BuildControl";
 
 const controls = [
-    { label : "Lettuce", type: "lettuce"},
-    { label : "Bacon", type: "bacon"},
-    { label : "Cheese", type: "cheese"},
-    { label : "Meat", type: "meat"}
+    // { label : "Lettuce", type: "lettuce"},
+    // { label : "Bacon", type: "bacon"},
+    // { label : "Cheese", type: "cheese"},
+    // { label : "Meat", type: "meat"}
+    { label : "Skillet", type: "skillet"},
+    { label : "Casserole", type: "casserole"},
+    { label : "Braiser", type: "braiser"},
+    { label : "Dutch Oven", type: "dutchoven"}
 ]
 
 const buildControls = (props) => (
     <div className={classes.BuildControls}>
-        <h3>Create Your Burger</h3>
+        <h3>Create Your Order</h3>
         <p>Current Price: <strong>${props.price.toFixed(2)}</strong></p>
         {controls.map(control => (
             <BuildControl 
