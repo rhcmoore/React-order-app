@@ -8,23 +8,16 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import * as actionTypes from "../../store/actions";
+import * as builderActions from "../../store/actions/index"
 
 class Builder extends React.Component {
     // For UI state only, the rest managed in Redux
     state = {
         purchasing: false, // determine if used has clicked Order
-        loading: false, // when T show spinner, when F show ordersummary
-        error: false
     };
 
     componentDidMount() {
-        // axios.get("https://order-e8ff6.firebaseio.com/ingredients.json")
-        //     .then(response => {
-        //         this.setState({ ingredients: response.data })
-        //     }).catch(error => {
-        //         this.setState({error: true});
-        //     });
+        this.props.onInitIngredients();
     }
 
     updatePurchaseState = (ingredients) => {
@@ -61,7 +54,7 @@ class Builder extends React.Component {
             disabledInfo[key] = disabledInfo[key] <= 0
         }
         let orderSummary = null;
-        let burger = this.state.error ? <p>Can't load ingredients</p> : <Spinner />
+        let burger = this.props.error ? <p>Can't load ingredients</p> : <Spinner />
         if (this.props.ings) {
             burger = (
                 <Aux>
@@ -82,9 +75,9 @@ class Builder extends React.Component {
                 purchaseCancelled={this.purchaseCancelHandler}
                 purchaseContinued={this.purchaseContinueHandler} />
         }
-        if (this.state.loading) {
-            orderSummary = <Spinner />
-        }
+        // if (this.state.loading) {
+        //     orderSummary = <Spinner />
+        // }
 
         return (
             <Aux>
@@ -101,15 +94,17 @@ class Builder extends React.Component {
 const mapStateToProps = state => {
     return {
         ings: state.ingredients,
-        price: state.totalPrice
+        price: state.totalPrice,
+        error: state.error
     }
 }
 
 // sending to reducer values as props
 const mapDispatchToProps = dispatch => {
     return {
-        onIngredientAdded: (ingName) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName: ingName}),
-        onIngredientRemoved: (ingName) => dispatch({type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingName})
+        onIngredientAdded: (ingName) => dispatch(builderActions.addIngredient(ingName)),
+        onIngredientRemoved: (ingName) => dispatch(builderActions.removeIngredient(ingName)),
+        onInitIngredients: () => dispatch(builderActions.initIngredients())
     }
 }
 
