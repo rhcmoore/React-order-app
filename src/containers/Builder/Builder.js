@@ -42,7 +42,6 @@ class Builder extends React.Component {
 
     purchaseContinueHandler = () => {
         this.props.onInitPurchase();
-        console.log("init purchase")
         this.props.history.push("/checkout");
     }
 

@@ -110,7 +110,6 @@ class ContactData extends React.Component {
         }
         console.log("order Handler")
         this.props.onOrder(order);
-        this.props.history.push("/"); // this isn't correct, but works
     }
 
     checkValidity(value, rules) {
