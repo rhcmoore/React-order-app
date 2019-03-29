@@ -41,6 +41,8 @@ class Builder extends React.Component {
     }
 
     purchaseContinueHandler = () => {
+        this.props.onInitPurchase();
+        console.log("init purchase")
         this.props.history.push("/checkout");
     }
 
@@ -75,9 +77,6 @@ class Builder extends React.Component {
                 purchaseCancelled={this.purchaseCancelHandler}
                 purchaseContinued={this.purchaseContinueHandler} />
         }
-        // if (this.state.loading) {
-        //     orderSummary = <Spinner />
-        // }
 
         return (
             <Aux>
@@ -93,9 +92,9 @@ class Builder extends React.Component {
 // fetching from global state
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
-        price: state.totalPrice,
-        error: state.error
+        ings: state.builder.ingredients,
+        price: state.builder.totalPrice,
+        error: state.builder.error
     }
 }
 
@@ -104,7 +103,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onIngredientAdded: (ingName) => dispatch(builderActions.addIngredient(ingName)),
         onIngredientRemoved: (ingName) => dispatch(builderActions.removeIngredient(ingName)),
-        onInitIngredients: () => dispatch(builderActions.initIngredients())
+        onInitIngredients: () => dispatch(builderActions.initIngredients()),
+        onInitPurchase: () => dispatch(builderActions.purchaseInit())
     }
 }
 
