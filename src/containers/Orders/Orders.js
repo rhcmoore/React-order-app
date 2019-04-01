@@ -8,18 +8,23 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 
 class Orders extends React.Component {
     componentDidMount() {
-        this.props.onFetchOrders(this.props.token);
+        this.props.onFetchOrders(this.props.token, this.props.userId);
     }
 
     render() {
         let orders = <Spinner />;
         if (!this.props.loading) {
-            orders = this.props.orders.map(order => (
-                <Order
-                    key={order.id}
-                    ingredients={order.ingredients}
-                    price={order.price} />
-            ))
+            if (this.props.orders.length === 0) {
+                orders = <div style={{textAlign: "center"}}>You have not yet completed any orders.</div>
+            } else {
+                orders = this.props.orders.map(order => (
+                    <Order
+                        key={order.id}
+                        ingredients={order.ingredients}
+                        price={order.price} />
+                ))
+            }
+            
         }
         return (
             <div>
@@ -33,13 +38,14 @@ const mapStateToProps = state => {
     return {
         orders: state.order.orders,
         loading: state.order.loading,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchOrders: (token) => dispatch(actions.fetchOrders(token))
+        onFetchOrders: (token, userId) => dispatch(actions.fetchOrders(token, userId))
     };
 }  
 

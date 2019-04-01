@@ -106,9 +106,9 @@ class ContactData extends React.Component {
         const order = {
             ingredients: this.props.ings,
             price: this.props.price, // would need to calculate on server-side in prod env
-            orderData: formData
+            orderData: formData,
+            userId: this.props.userId
         }
-        console.log("order Handler")
         this.props.onOrder(order, this.props.token);
     }
 
@@ -196,7 +196,8 @@ const mapStateToProps = state => {
         ings: state.builder.ingredients,
         price: state.builder.totalPrice,
         loading: state.order.loading,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 

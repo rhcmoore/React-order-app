@@ -29,8 +29,8 @@ export const logout = () => {
     localStorage.removeItem("userId");
     return {
         type: actionTypes.AUTH_LOGOUT
-    }
-}
+    };
+};
 
 // async
 export const checkAuthTimeout = (expirationTime) => {
@@ -38,8 +38,8 @@ export const checkAuthTimeout = (expirationTime) => {
         setTimeout(() => {
             dispatch(logout());
         }, expirationTime * 1000); // logout user after 1 hour
-    }
-}
+    };
+};
 
 // async
 export const auth = (email, password, isSignUp) => {
