@@ -5,6 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
+import { BrowserRouter } from "react-router-dom";
 import builderReducer from "./store/reducers/builder";
 import thunk from "redux-thunk";
 import orderReducer from "./store/reducers/order";
@@ -18,11 +19,13 @@ const rootReducer = combineReducers({
     auth: authReducer
 });
 
-const store = createStore( rootReducer, composeEnhancers(applyMiddleware(thunk)));
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 const app = (
     <Provider store={store}>
-        <App />
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
     </Provider>
 );
 ReactDOM.render(app, document.getElementById('root'));

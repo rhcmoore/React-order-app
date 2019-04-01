@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { Route, Switch, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 import Layout from "./containers/Layout/Layout";
 import Builder from "./containers/Builder/Builder";
 import Checkout from "./containers/Checkout/Checkout";
 import Orders from './containers/Orders/Orders';
 import Auth from "./containers/Auth/Auth";
 import Logout from "./containers/Auth/Logout/Logout";
+import * as actions from "./store/actions/index";
 
 class App extends Component {
+  componentDidMount() {
+    this.props.onTryAutoSignup();
+  }
+
+
   render() {
     return (
-      <BrowserRouter>
         <Layout>
           <Switch>
             <Route path="/checkout" component={Checkout} />
@@ -20,9 +26,15 @@ class App extends Component {
             <Route path="/" exact component={Builder} />
           </Switch>
         </Layout>
-      </BrowserRouter>
     );
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAutoSignup: () => dispatch(actions.authCheckState())
+  }
+}
+
+// withRouter enforces props being passed down to App component
+export default withRouter(connect(null, mapDispatchToProps)(App));
