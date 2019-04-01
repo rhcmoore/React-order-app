@@ -109,7 +109,7 @@ class ContactData extends React.Component {
             orderData: formData
         }
         console.log("order Handler")
-        this.props.onOrder(order);
+        this.props.onOrder(order, this.props.token);
     }
 
     checkValidity(value, rules) {
@@ -195,13 +195,14 @@ const mapStateToProps = state => {
     return {
         ings: state.builder.ingredients,
         price: state.builder.totalPrice,
-        loading: state.order.loading
+        loading: state.order.loading,
+        token: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onOrder: (orderData) => dispatch(actions.purchase(orderData))
+        onOrder: (orderData, token) => dispatch(actions.purchase(orderData, token))
     }
 }
 
