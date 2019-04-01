@@ -28,7 +28,7 @@ export const purchase = (orderData, token) => {
     return dispatch => {
         dispatch(purchaseStart());
         // post order to db
-        axios.post("/orders.json=?auth=" + token, orderData) // .json is Firebase notation
+        axios.post("/orders.json?auth=" + token, orderData) // .json is Firebase notation
             .then(response => {
                 dispatch(purchaseSuccess(response.data.name, orderData))
             }).catch(error => {
@@ -66,7 +66,7 @@ export const fetchOrdersStart = () => {
 // async
 export const fetchOrders = (token) => {
     return dispatch => {
-        dispatch(fetchOrdersStart);
+        dispatch(fetchOrdersStart());
         axios.get("/orders.json?auth=" + token)
         .then(res => {
             const fetchedOrders = [];

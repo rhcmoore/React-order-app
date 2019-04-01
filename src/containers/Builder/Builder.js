@@ -33,7 +33,12 @@ class Builder extends React.Component {
     }
 
     purchaseHandler = () => {
-        this.setState({ purchasing: true })
+        if (this.props.isAuthenticated) {
+            this.setState({ purchasing: true });
+        } else {
+            this.props.onSetAuthRedirectPath("/checkout");
+            this.props.history.push("/auth");
+        }   
     }
 
     purchaseCancelHandler = () => {
@@ -67,6 +72,7 @@ class Builder extends React.Component {
                         price={this.props.price}
                         purchaseable={this.updatePurchaseState(this.props.ings)}
                         ordered={this.purchaseHandler}
+                        isAuth={this.props.isAuthenticated}
                     />
                 </Aux>
             );
@@ -93,7 +99,8 @@ const mapStateToProps = state => {
     return {
         ings: state.builder.ingredients,
         price: state.builder.totalPrice,
-        error: state.builder.error
+        error: state.builder.error,
+        isAuthenticated: state.auth.token !== null
     }
 }
 
@@ -103,7 +110,8 @@ const mapDispatchToProps = dispatch => {
         onIngredientAdded: (ingName) => dispatch(builderActions.addIngredient(ingName)),
         onIngredientRemoved: (ingName) => dispatch(builderActions.removeIngredient(ingName)),
         onInitIngredients: () => dispatch(builderActions.initIngredients()),
-        onInitPurchase: () => dispatch(builderActions.purchaseInit())
+        onInitPurchase: () => dispatch(builderActions.purchaseInit()),
+        onSetAuthRedirectPath: (path) => dispatch(builderActions.setAuthRedirectPath(path))
     }
 }
 
