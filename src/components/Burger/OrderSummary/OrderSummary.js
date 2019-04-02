@@ -7,7 +7,7 @@ class OrderSummary extends React.Component {
 
     // left for future purposes (could be functional)
     componentWillUpdate() {
-        // console.log("[Order Summary] willUpdate");
+        
     }
 
     render() {
