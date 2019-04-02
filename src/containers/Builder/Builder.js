@@ -10,7 +10,8 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import * as builderActions from "../../store/actions/index"
 
-class Builder extends React.Component {
+// exporting for testing, stripping connection from Redux
+export class Builder extends React.Component {
     // For UI state only, the rest managed in Redux
     state = {
         purchasing: false, // determine if used has clicked Order

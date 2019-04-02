@@ -7,13 +7,10 @@ const navItems = (props) => (
         <NavItem link="/" exact>Cookware</NavItem>
         {props.isAuthenticated 
             ? <NavItem link="/orders">Orders</NavItem>
-            : null
-        }
+            : null}
         {props.isAuthenticated 
             ? <NavItem link="/logout">Logout</NavItem> 
-            : <NavItem link="/auth">Login</NavItem> 
-        }
-        
+            : <NavItem link="/auth">Login</NavItem>}
     </ul>
 );
 
